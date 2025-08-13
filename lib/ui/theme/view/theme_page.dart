@@ -23,7 +23,13 @@ class ThemeView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<ThemeBloc, ThemeState>(
       builder: (context, state) {
-        return Switch(
+        return IconButton(
+          onPressed: () => context.read<ThemeBloc>().add(ToggleTheme()),
+          icon: state.isDarkMode
+              ? const Icon(Icons.dark_mode)
+              : const Icon(Icons.light_mode),
+        );
+        Switch(
           value: state.isDarkMode,
           onChanged: (_) {
             context.read<ThemeBloc>().add(ToggleTheme());
