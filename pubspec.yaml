@@ -1,0 +1,35 @@
+name: flutter_bay
+description: Your number one e-marketplace
+version: 1.0.0+1
+publish_to: none
+
+environment:
+  sdk: ^3.8.0
+
+dependencies:
+  bloc: ^9.0.0
+  cached_network_image: ^3.4.1
+  equatable: ^2.0.7
+  flutter:
+    sdk: flutter
+  flutter_bloc: ^9.1.1
+  flutter_localizations:
+    sdk: flutter
+  hive_flutter: ^1.1.0
+  http: ^1.5.0
+  hydrated_bloc: ^10.1.1
+  intl: ^0.20.2
+  path_provider: ^2.1.5
+  shared_preferences: ^2.5.3
+  skeletonizer: ^2.1.0+1
+
+dev_dependencies:
+  bloc_test: ^10.0.0
+  flutter_test:
+    sdk: flutter
+  mocktail: ^1.0.4
+  very_good_analysis: ^9.0.0
+
+flutter:
+  generate: true
+  uses-material-design: true
