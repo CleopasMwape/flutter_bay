@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bay/data/models/product.dart';
 import 'package:flutter_bay/data/services/api_service.dart';
 import 'package:flutter_bay/data/services/cache_service.dart';
@@ -30,6 +31,10 @@ class ProductRepository {
 
       if (products.isNotEmpty) {
         await cacheService.cacheProducts(products);
+      }
+
+      if (kDebugMode) {
+        print('Products: $products');
       }
 
       return products;

@@ -1,17 +1,26 @@
 import 'package:flutter_bay/core/constants/app_constants.dart';
 import 'package:flutter_bay/core/errors/exceptions.dart';
 import 'package:flutter_bay/data/models/product.dart';
+import 'package:flutter_bay/data/models/rating.dart';
 import 'package:hive/hive.dart';
 
 class CacheService {
-  Box<Map>? _productBox;
-  Box<List>? _categoryBox;
+  Box<Product>? _productBox;
+  Box<List<String>>? _categoryBox;
   Box<String>? _metaBox;
 
   Future<void> init() async {
     try {
-      _productBox = await Hive.openBox<Map>(AppConstants.cacheBoxName);
-      _categoryBox = await Hive.openBox<List>('categories_cache');
+      // Register adapters before opening boxes
+      if (!Hive.isAdapterRegistered(0)) {
+        Hive.registerAdapter(ProductAdapter());
+      }
+      if (!Hive.isAdapterRegistered(1)) {
+        Hive.registerAdapter(RatingAdapter());
+      }
+
+      _productBox = await Hive.openBox<Product>(AppConstants.cacheBoxName);
+      _categoryBox = await Hive.openBox<List<String>>('categories_cache');
       _metaBox = await Hive.openBox<String>('meta_cache');
     } catch (e) {
       throw CacheException('Failed to initialize cache: $e');
@@ -24,11 +33,11 @@ class CacheService {
 
       // Cache individual products
       for (final product in products) {
-        await _productBox!.put(product.id, product.toJson());
+        await _productBox!.put(product.id, product);
       }
 
       // Cache product list
-      final productIds = products.map((p) => p.id).toList();
+      final productIds = products.map((p) => p.id.toString()).toList();
       await _metaBox!.put('all_products', productIds.join(','));
       await _metaBox!.put('cache_timestamp', DateTime.now().toIso8601String());
     } catch (e) {
@@ -51,23 +60,16 @@ class CacheService {
       final productIds = productIdsString
           .split(',')
           .where((id) => id.isNotEmpty)
-          .map(int.tryParse)
+          .map((id) => num.tryParse(id))
           .where((id) => id != null)
-          .cast<int>()
+          .cast<num>()
           .toList();
 
       final products = <Product>[];
       for (final id in productIds) {
-        final productData = _productBox!.get(id);
-        if (productData != null) {
-          try {
-            products.add(
-              Product.fromJson(Map<String, dynamic>.from(productData)),
-            );
-          } catch (e) {
-            // Skip invalid cached products
-            continue;
-          }
+        final product = _productBox!.get(id);
+        if (product != null) {
+          products.add(product);
         }
       }
 
@@ -80,12 +82,7 @@ class CacheService {
   Future<Product?> getCachedProduct(int id) async {
     try {
       await _ensureInitialized();
-
-      final productData = _productBox!.get(id);
-      if (productData != null) {
-        return Product.fromJson(Map<String, dynamic>.from(productData));
-      }
-      return null;
+      return _productBox!.get(id);
     } catch (e) {
       throw CacheException('Failed to get cached product: $e');
     }
@@ -94,7 +91,7 @@ class CacheService {
   Future<void> cacheProduct(Product product) async {
     try {
       await _ensureInitialized();
-      await _productBox!.put(product.id, product.toJson());
+      await _productBox!.put(product.id, product);
     } catch (e) {
       throw CacheException('Failed to cache product: $e');
     }
@@ -119,7 +116,7 @@ class CacheService {
 
       final categories = _categoryBox!.get('categories');
       if (categories != null) {
-        return List<String>.from(categories);
+        return categories;
       }
       return [];
     } catch (e) {

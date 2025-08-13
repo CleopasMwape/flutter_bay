@@ -1,15 +1,14 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bay/data/models/product.dart';
 
-import '../../core/constants/api_constants.dart';
 import '../../core/network/api_client.dart';
 
 class ApiService {
+  ApiService({ApiClient? apiClient}) : apiClient = apiClient ?? ApiClient();
   final ApiClient apiClient;
 
-  ApiService({ApiClient? apiClient}) : apiClient = apiClient ?? ApiClient();
-
   Future<List<Product>> getProducts({int? limit, int? offset}) async {
-    String endpoint = '/products';
+    var endpoint = '/products';
 
     final queryParams = <String, String>{};
     if (limit != null) queryParams['limit'] = limit.toString();
@@ -22,10 +21,21 @@ class ApiService {
       endpoint += '?$query';
     }
 
-    final jsonList = await apiClient.getList(endpoint);
-    return jsonList
-        .map((json) => Product.fromJson(json as Map<String, dynamic>))
-        .toList();
+    try {
+      final jsonList = await apiClient.getList(endpoint);
+      if (kDebugMode) {
+        print(jsonList);
+      }
+
+      final products = jsonList
+          .map((json) => Product.fromJson(json as Map<String, dynamic>))
+          .toList();
+      print('Fetched ${products.length}: $products');
+      return products;
+    } catch (e) {
+      print('Error fetching products: $e');
+      rethrow;
+    }
   }
 
   Future<Product> getProduct(int id) async {

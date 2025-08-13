@@ -43,17 +43,17 @@ class App extends StatelessWidget {
                 ProductDetailsBloc(repository: productRepository),
           ),
         ],
-        child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          theme: ThemeData(
-            appBarTheme: AppBarTheme(
-              backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-            ),
-            useMaterial3: true,
-          ),
-          localizationsDelegates: AppLocalizations.localizationsDelegates,
-          supportedLocales: AppLocalizations.supportedLocales,
-          home: const ProductsPage(),
+        child: BlocBuilder<ThemeBloc, ThemeState>(
+          builder: (context, state) {
+            return MaterialApp(
+              debugShowCheckedModeBanner: false,
+              theme: state.isDarkMode ? ThemeData.dark() : ThemeData.light(),
+
+              localizationsDelegates: AppLocalizations.localizationsDelegates,
+              supportedLocales: AppLocalizations.supportedLocales,
+              home: const ProductsPage(),
+            );
+          },
         ),
       ),
     );

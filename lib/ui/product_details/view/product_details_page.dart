@@ -53,7 +53,7 @@ class ProductDetailsView extends StatelessWidget {
                     ),
                     const SizedBox(width: 16),
                     Text(
-                      state.product.price.formatPrice,
+                      state.product.price.toDouble().formatPrice,
                       style: Theme.of(context).textTheme.headlineMedium
                           ?.copyWith(
                             color: Colors.green,
@@ -88,8 +88,8 @@ class ProductDetailsView extends StatelessWidget {
                     ),
                     const Spacer(),
                     RatingWidget(
-                      rating: state.product.rating.rate,
-                      count: state.product.rating.count,
+                      rating: state.product.rating.rate.toDouble(),
+                      count: state.product.rating.count.toInt(),
                     ),
                   ],
                 ),

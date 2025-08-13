@@ -16,15 +16,19 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   hive_flutter: ^1.1.0
+  hive_generator: ^2.0.1
   http: ^1.5.0
   hydrated_bloc: ^10.1.1
   intl: ^0.20.2
+  json_annotation: ^4.9.0
+  json_serializable: ^6.9.0
   path_provider: ^2.1.5
   shared_preferences: ^2.5.3
   skeletonizer: ^2.1.0+1
 
 dev_dependencies:
   bloc_test: ^10.0.0
+  build_runner: ^2.5.4
   flutter_test:
     sdk: flutter
   mocktail: ^1.0.4

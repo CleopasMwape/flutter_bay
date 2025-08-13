@@ -21,7 +21,7 @@ class ProductCard extends StatelessWidget {
               context,
               PageRouteBuilder(
                 pageBuilder: (context, animation, secondaryAnimation) =>
-                    ProductDetailsPage(productId: product.id),
+                    ProductDetailsPage(productId: product.id.toInt()),
                 transitionsBuilder:
                     (context, animation, secondaryAnimation, child) {
                       return SlideTransition(
