@@ -1,4 +1,3 @@
-// presentation/widgets/error_widget.dart
 import 'package:flutter/material.dart';
 
 class CustomErrorWidget extends StatelessWidget {
