@@ -7,10 +7,12 @@ class ThemePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => ThemeBloc(),
-      child: const ThemeView(),
-    );
+    // return BlocProvider(
+    //   create: (_) => ThemeBloc(),
+    //   child: const ThemeView(),
+    // );
+
+    return const ThemeView();
   }
 }
 

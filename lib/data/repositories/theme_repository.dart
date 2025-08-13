@@ -1,3 +1,6 @@
+import 'package:flutter_bay/core/errors/result.dart';
+import 'package:flutter_bay/data/services/shared_preferences_service.dart';
+
 class ThemeRepository {
   ThemeRepository(this._service);
 
@@ -17,8 +20,8 @@ class ThemeRepository {
   Future<Result<void>> setDarkMode(bool value) async {
     try {
       await _service.setDarkMode(value);
-      _darkModeController.add(value);
-      return Result.ok(null);
+      // _darkModeController.add(value);
+      return const Result.ok(null);
     } on Exception catch (e) {
       return Result.error(e);
     }

@@ -4,8 +4,8 @@ import 'package:flutter_bay/data/models/rating.dart';
 import 'package:flutter_bay/ui/products/view/product_card.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
-class LoadingWidget extends StatelessWidget {
-  const LoadingWidget({super.key});
+class ProductLoadingWidget extends StatelessWidget {
+  const ProductLoadingWidget({super.key});
 
   @override
   Widget build(BuildContext context) {

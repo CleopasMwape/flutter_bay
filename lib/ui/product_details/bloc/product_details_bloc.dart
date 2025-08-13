@@ -24,7 +24,7 @@ class ProductDetailsBloc extends Bloc<ProductDetailEvent, ProductDetailsState> {
     try {
       final product = await repository.getProduct(event.productId);
       emit(ProductDetailLoaded(product: product));
-    } catch (e) {
+    } on Exception catch (e) {
       emit(ProductDetailError(e.toString()));
     }
   }

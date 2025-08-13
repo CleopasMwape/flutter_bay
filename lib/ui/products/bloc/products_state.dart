@@ -7,12 +7,12 @@ abstract class ProductsState extends Equatable {
   List<Object?> get props => [];
 }
 
-class ProductInitial extends ProductsState {}
+class ProductsInitial extends ProductsState {}
 
-class ProductLoading extends ProductsState {}
+class ProductsLoading extends ProductsState {}
 
-class ProductLoaded extends ProductsState {
-  const ProductLoaded({
+class ProductsLoaded extends ProductsState {
+  const ProductsLoaded({
     required this.products,
     required this.filteredProducts,
     required this.categories,
@@ -31,7 +31,7 @@ class ProductLoaded extends ProductsState {
   final double maxPrice;
   final bool hasReachedMax;
 
-  ProductLoaded copyWith({
+  ProductsLoaded copyWith({
     List<Product>? products,
     List<Product>? filteredProducts,
     List<String>? categories,
@@ -41,7 +41,7 @@ class ProductLoaded extends ProductsState {
     double? maxPrice,
     bool? hasReachedMax,
   }) {
-    return ProductLoaded(
+    return ProductsLoaded(
       products: products ?? this.products,
       filteredProducts: filteredProducts ?? this.filteredProducts,
       categories: categories ?? this.categories,
@@ -66,24 +66,24 @@ class ProductLoaded extends ProductsState {
   ];
 }
 
-class ProductError extends ProductsState {
-  const ProductError(this.message);
+class ProductsError extends ProductsState {
+  const ProductsError(this.message);
   final String message;
 
   @override
   List<Object?> get props => [message];
 }
 
-class ProductEmpty extends ProductsState {
-  const ProductEmpty({this.message = 'No products found'});
+class ProductsEmpty extends ProductsState {
+  const ProductsEmpty({this.message = 'No products found'});
   final String message;
 
   @override
   List<Object?> get props => [message];
 }
 
-class ProductLoadingMore extends ProductsState {
-  const ProductLoadingMore({
+class ProductsLoadingMore extends ProductsState {
+  const ProductsLoadingMore({
     required this.products,
     required this.filteredProducts,
   });

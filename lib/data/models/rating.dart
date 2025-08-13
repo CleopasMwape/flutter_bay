@@ -1,7 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-
 part 'rating.g.dart';
 
 /// {@template rating}
@@ -10,12 +9,12 @@ part 'rating.g.dart';
 @JsonSerializable()
 class Rating extends Equatable {
   /// {@macro rating}
-  const Rating({ 
-  required this.rate,
-  required this.count,
+  const Rating({
+    required this.rate,
+    required this.count,
   });
 
-    /// Creates a Rating from Json map
+  /// Creates a Rating from Json map
   factory Rating.fromJson(Map<String, dynamic> data) => _$RatingFromJson(data);
 
   /// A description for rate
@@ -26,8 +25,8 @@ class Rating extends Equatable {
   @JsonKey(name: 'count')
   final int count;
 
-    /// Creates a copy of the current Rating with property changes
-  Rating copyWith({ 
+  /// Creates a copy of the current Rating with property changes
+  Rating copyWith({
     double? rate,
     int? count,
   }) {
@@ -37,17 +36,16 @@ class Rating extends Equatable {
     );
   }
 
-
-    @override
+  @override
   List<Object?> get props => [
-        rate,
-        count,
-      ];
+    rate,
+    count,
+  ];
 
-    /// Creates a Json map from a Rating
+  /// Creates a Json map from a Rating
   Map<String, dynamic> toJson() => _$RatingToJson(this);
 
-    /// Creates a toString() override for Rating
+  /// Creates a toString() override for Rating
   @override
   String toString() => 'Rating(rate: $rate, count: $count)';
 }

@@ -3,13 +3,12 @@ import 'package:flutter_bay/data/services/api_service.dart';
 import 'package:flutter_bay/data/services/cache_service.dart';
 
 class ProductRepository {
-  final ApiService apiService;
-  final CacheService cacheService;
-
   ProductRepository({
     required this.apiService,
     required this.cacheService,
   });
+  final ApiService apiService;
+  final CacheService cacheService;
 
   Future<List<Product>> getProducts({
     bool forceRefresh = false,

@@ -1,22 +1,61 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bay/counter/counter.dart';
+import 'package:flutter_bay/data/repositories/product_repository.dart';
+import 'package:flutter_bay/data/repositories/theme_repository.dart';
 import 'package:flutter_bay/l10n/l10n.dart';
+import 'package:flutter_bay/ui/product_details/bloc/product_details_bloc.dart';
+import 'package:flutter_bay/ui/products/bloc/products_bloc.dart';
+import 'package:flutter_bay/ui/products/view/products_page.dart';
+import 'package:flutter_bay/ui/theme/bloc/theme_bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class App extends StatelessWidget {
-  const App({super.key});
+  const App({
+    required this.productRepository,
+    required this.themeRepository,
+
+    super.key,
+  });
+
+  final ProductRepository productRepository;
+  final ThemeRepository themeRepository;
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-        appBarTheme: AppBarTheme(
-          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+    return MultiRepositoryProvider(
+      providers: [
+        RepositoryProvider.value(value: productRepository),
+        RepositoryProvider.value(value: themeRepository),
+      ],
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) => ThemeBloc(
+              themeRepository,
+            ),
+          ),
+          BlocProvider(
+            create: (context) => ProductsBloc(
+              repository: context.read<ProductRepository>(),
+            ),
+          ),
+          BlocProvider(
+            create: (context) =>
+                ProductDetailsBloc(repository: productRepository),
+          ),
+        ],
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+            appBarTheme: AppBarTheme(
+              backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+            ),
+            useMaterial3: true,
+          ),
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          home: const ProductsPage(),
         ),
-        useMaterial3: true,
       ),
-      localizationsDelegates: AppLocalizations.localizationsDelegates,
-      supportedLocales: AppLocalizations.supportedLocales,
-      home: const CounterPage(),
     );
   }
 }

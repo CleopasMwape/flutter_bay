@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_bay/core/errors/result.dart';
 import 'package:flutter_bay/data/repositories/theme_repository.dart';
 
 part 'theme_event.dart';
@@ -22,16 +23,27 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
     Emitter<ThemeState> emit,
   ) async {
     final newThemeMode = !state.isDarkMode;
-    emit(ThemeState(isDarkMode: newThemeMode));
-
-    await _themeRepository.setDarkMode(newThemeMode);
+    try {
+      final result = await _themeRepository.setDarkMode(newThemeMode);
+      if (result is Ok<void>) {
+        emit(ThemeState(isDarkMode: newThemeMode));
+      }
+    } on Exception catch (e) {
+      // emit(const ThemeState(isDarkMode: false));
+    }
   }
 
   Future<void> _onLoadTheme(
     LoadTheme event,
     Emitter<ThemeState> emit,
   ) async {
-    final value = await _themeRepository.isDarkMode();
-    emit(ThemeState(isDarkMode: value));
+    try {
+      final result = await _themeRepository.isDarkMode();
+      if (result is Ok<bool>) {
+        emit(ThemeState(isDarkMode: result.value));
+      }
+    } on Exception catch (e) {
+      // emit(const ThemeState(isDarkMode: false));
+    }
   }
 }

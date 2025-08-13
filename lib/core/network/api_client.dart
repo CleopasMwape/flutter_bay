@@ -6,13 +6,12 @@ import 'package:flutter_bay/core/errors/exceptions.dart';
 import 'package:http/http.dart' as http;
 
 class ApiClient {
-  final http.Client client;
-  final String baseUrl;
-
   ApiClient({
     http.Client? client,
     this.baseUrl = ApiConstants.baseUrl,
   }) : client = client ?? http.Client();
+  final http.Client client;
+  final String baseUrl;
 
   Future<Map<String, dynamic>> get(String endpoint) async {
     try {
@@ -23,7 +22,7 @@ class ApiClient {
           )
           .timeout(ApiConstants.timeout);
 
-      return _handleResponse(response);
+      return _handleResponse(response) as Map<String, dynamic>;
     } on SocketException {
       throw NetworkException('No internet connection');
     } on TimeoutException {

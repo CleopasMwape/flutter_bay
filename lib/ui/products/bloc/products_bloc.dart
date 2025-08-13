@@ -11,7 +11,7 @@ part 'products_event.dart';
 part 'products_state.dart';
 
 class ProductsBloc extends Bloc<ProductEvent, ProductsState> {
-  ProductsBloc({required this.repository}) : super(ProductInitial()) {
+  ProductsBloc({required this.repository}) : super(ProductsInitial()) {
     on<LoadProducts>(_onLoadProducts);
     on<RefreshProducts>(_onRefreshProducts);
     on<SearchProducts>(
@@ -41,7 +41,7 @@ class ProductsBloc extends Bloc<ProductEvent, ProductsState> {
     Emitter<ProductsState> emit,
   ) async {
     if (_allProducts.isEmpty || event.forceRefresh) {
-      emit(ProductLoading());
+      emit(ProductsLoading());
     }
 
     try {
@@ -51,11 +51,11 @@ class ProductsBloc extends Bloc<ProductEvent, ProductsState> {
       _categories = await repository.getCategories();
 
       if (_allProducts.isEmpty) {
-        emit(const ProductEmpty());
+        emit(const ProductsEmpty());
       } else {
         final filteredProducts = _applyFilters();
         emit(
-          ProductLoaded(
+          ProductsLoaded(
             products: _allProducts,
             filteredProducts: filteredProducts,
             categories: _categories,
@@ -67,7 +67,7 @@ class ProductsBloc extends Bloc<ProductEvent, ProductsState> {
         );
       }
     } catch (e) {
-      emit(ProductError(e.toString()));
+      emit(ProductsError(e.toString()));
     }
   }
 
@@ -85,8 +85,8 @@ class ProductsBloc extends Bloc<ProductEvent, ProductsState> {
     _searchQuery = event.query;
     final filteredProducts = _applyFilters();
 
-    if (state is ProductLoaded) {
-      final currentState = state as ProductLoaded;
+    if (state is ProductsLoaded) {
+      final currentState = state as ProductsLoaded;
       emit(
         currentState.copyWith(
           filteredProducts: filteredProducts,
@@ -103,8 +103,8 @@ class ProductsBloc extends Bloc<ProductEvent, ProductsState> {
     _selectedCategory = event.category;
     final filteredProducts = _applyFilters();
 
-    if (state is ProductLoaded) {
-      final currentState = state as ProductLoaded;
+    if (state is ProductsLoaded) {
+      final currentState = state as ProductsLoaded;
       emit(
         currentState.copyWith(
           filteredProducts: filteredProducts,
@@ -122,8 +122,8 @@ class ProductsBloc extends Bloc<ProductEvent, ProductsState> {
     _maxPrice = event.maxPrice;
     final filteredProducts = _applyFilters();
 
-    if (state is ProductLoaded) {
-      final currentState = state as ProductLoaded;
+    if (state is ProductsLoaded) {
+      final currentState = state as ProductsLoaded;
       emit(
         currentState.copyWith(
           filteredProducts: filteredProducts,
@@ -144,8 +144,8 @@ class ProductsBloc extends Bloc<ProductEvent, ProductsState> {
     _maxPrice = 1000;
     final filteredProducts = _applyFilters();
 
-    if (state is ProductLoaded) {
-      final currentState = state as ProductLoaded;
+    if (state is ProductsLoaded) {
+      final currentState = state as ProductsLoaded;
       emit(
         currentState.copyWith(
           filteredProducts: filteredProducts,
@@ -162,10 +162,10 @@ class ProductsBloc extends Bloc<ProductEvent, ProductsState> {
     LoadMoreProducts event,
     Emitter<ProductsState> emit,
   ) async {
-    if (state is ProductLoaded) {
-      final currentState = state as ProductLoaded;
+    if (state is ProductsLoaded) {
+      final currentState = state as ProductsLoaded;
       emit(
-        ProductLoadingMore(
+        ProductsLoadingMore(
           products: currentState.products,
           filteredProducts: currentState.filteredProducts,
         ),

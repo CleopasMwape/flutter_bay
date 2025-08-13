@@ -51,7 +51,7 @@ class CacheService {
       final productIds = productIdsString
           .split(',')
           .where((id) => id.isNotEmpty)
-          .map((id) => int.tryParse(id))
+          .map(int.tryParse)
           .where((id) => id != null)
           .cast<int>()
           .toList();

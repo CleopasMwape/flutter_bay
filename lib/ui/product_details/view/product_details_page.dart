@@ -10,27 +10,31 @@ class ProductDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => ProductDetailsBloc(),
-      child: const ProductDetailsView(),
+      create: (_) => ProductDetailsBloc(repository: context.read()),
+      child: ProductDetailsView(
+        productId: productId,
+      ),
     );
   }
 }
 
 class ProductDetailsView extends StatelessWidget {
-  const ProductDetailsView({super.key});
+  const ProductDetailsView({super.key, required this.productId});
+
+  final int productId;
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ProductDetailsBloc, ProductDetailsState>(
       builder: (context, state) {
         if (state is ProductDetailInitial) {
-          context.read<ProductDetailsBloc>().add(LoadProductDetail());
+          context.read<ProductDetailsBloc>().add(LoadProductDetail(productId));
           return const Center(child: CircularProgressIndicator());
         } else if (state is ProductDetailLoading) {
           return const Center(child: CircularProgressIndicator());
         } else if (state is ProductDetailLoaded) {
           return Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

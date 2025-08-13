@@ -2,16 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bay/core/utils/extensions.dart';
 
 class RatingWidget extends StatelessWidget {
+  const RatingWidget({
+    required this.rating,
+    required this.count,
+    super.key,
+    this.size = 16,
+  });
   final double rating;
   final int count;
   final double size;
-
-  const RatingWidget({
-    super.key,
-    required this.rating,
-    required this.count,
-    this.size = 16,
-  });
 
   @override
   Widget build(BuildContext context) {
